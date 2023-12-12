@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerInputs : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class PlayerInputs : MonoBehaviour
 		[Header("Mouse Cursor Settings")]
 		public bool cursorLocked = true;
 		public bool cursorInputForLook = true;
-		/*
+
 		public void OnMove(InputAction.CallbackContext ctx)
 		{
 			move = ctx.ReadValue<Vector2>();
@@ -46,6 +47,6 @@ public class PlayerInputs : MonoBehaviour
 		private void SetCursorState(bool newState)
 		{
 			Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
-		}*/
+		}
 	}
 	

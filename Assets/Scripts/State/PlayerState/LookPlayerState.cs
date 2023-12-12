@@ -1,6 +1,7 @@
 using UnityEngine;
 public class LookPlayerState : PlayerState
 {
+	private LookPlayerState _lookPlayerState;
 	private const float _threshold = 0.01f;
     private const float deltaTimeMultiplier = 1.0f;
 	
