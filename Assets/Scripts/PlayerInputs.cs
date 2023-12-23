@@ -26,6 +26,7 @@ public class PlayerInputs : MonoBehaviour
 			if(cursorInputForLook)
 			{
 				look = ctx.ReadValue<Vector2>();
+				look.y = - look.y;
 			}
 		}
 

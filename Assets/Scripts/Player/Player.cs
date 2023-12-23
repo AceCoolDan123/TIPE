@@ -10,7 +10,8 @@ public class Player : MonoBehaviour
 		[Tooltip("Sprint speed of the character in m/s")]
 		[SerializeField] private float sprintSpeed = 6.0f;
 		[Tooltip("Rotation speed of the character")]
-		[SerializeField] private float rotationSpeed = 1.0f;
+		[SerializeField] private float rotationXSpeed = 1.0f;
+		[SerializeField] private float rotationYSpeed = 1.0f;
 		[Tooltip("Acceleration and deceleration")]
 		[SerializeField] private float speedChangeRate = 10.0f;
 
@@ -60,7 +61,8 @@ public class Player : MonoBehaviour
     public float FallTimeoutDelta { get { return _fallTimeoutDelta;} set { _fallTimeoutDelta = value;}}
     public float MoveSpeed { get { return moveSpeed;}  set { moveSpeed = value; } }
     public float SprintSpeed { get { return sprintSpeed;}}
-    public float RotationSpeed { get { return rotationSpeed;}}
+    public float RotationXSpeed { get { return rotationXSpeed;}}
+    public float RotationYSpeed { get { return rotationYSpeed;}}
     public float SpeedChangeRate { get { return speedChangeRate;}}
     public float JumpHeight { get { return jumpHeight;}}
     public float Gravity { get { return gravity;}}

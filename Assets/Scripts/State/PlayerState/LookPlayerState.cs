@@ -28,8 +28,8 @@ public class LookPlayerState : PlayerState
 		{
 		//Don't multiply mouse input by Time.deltaTime
 		
-		_cinemachineTargetPitch += playerInputs.look.y * player.RotationSpeed * deltaTimeMultiplier;
-        _rotationVelocity = playerInputs.look.x * player.RotationSpeed * deltaTimeMultiplier;
+		_cinemachineTargetPitch += playerInputs.look.y * player.RotationYSpeed * deltaTimeMultiplier;
+        _rotationVelocity = playerInputs.look.x * player.RotationXSpeed * deltaTimeMultiplier;
 
 			// clamp our pitch rotation
 			_cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, player.BottomClamp, player.TopClamp);
