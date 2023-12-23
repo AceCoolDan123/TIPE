@@ -3,9 +3,8 @@ public class JumpPlayerState : PlayerState
 {
 	private const float _terminalVelocity = 53.0f;
     private bool _isGrounded;
-    public JumpPlayerState(Player player) : base(PlayerStateEnum.JUMP, player)
-    {
-    }
+    public JumpPlayerState(Player player)
+    : base(PlayerStateEnum.JUMP, player) {}
 
     public override void OnEnter() 
     {
@@ -16,7 +15,9 @@ public class JumpPlayerState : PlayerState
         // reset the jump timeout timer
         player.JumpTimeoutDelta = player.JumpTimeout;
         // if we are not grounded, do not jump
-			playerInputs.jump = false;
+		playerInputs.jump = false;
+
+        FindChildState();
     }
     public override void OnUpdate() 
     {
@@ -56,7 +57,13 @@ public class JumpPlayerState : PlayerState
     {
         if(_isGrounded)
         {
-            fsm.SetCurrentState(PlayerStateEnum.GROUNDED);
+            //fsm.SetCurrentState(PlayerStateEnum.GROUNDED);
         }
     } 
+
+    protected override void FindChildState()
+    {
+        currentChildState = PlayerStateEnum.MOVE;
+        
+    }
 }

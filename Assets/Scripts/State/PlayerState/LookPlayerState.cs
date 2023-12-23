@@ -7,13 +7,16 @@ public class LookPlayerState : PlayerState
 	
     private float _cinemachineTargetPitch, _rotationVelocity;
     
-    public LookPlayerState(Player player) : base(PlayerStateEnum.LOOK, player)
+    public LookPlayerState(Player player)
+	: base(PlayerStateEnum.LOOK, player)
     {
         this.player = player;
-
     }
 
-    public override void OnEnter() {}
+    public override void OnEnter() 
+	{
+		FindChildState();
+	}
     public override void OnUpdate() {}
     public override void OnLateUpdate() 
     {
@@ -50,4 +53,9 @@ public class LookPlayerState : PlayerState
 		}
 
     protected override void CheckTransitions() {}
+
+	protected override void FindChildState()
+	{
+		currentChildState = PlayerStateEnum.GROUNDED;
+	}
 }

@@ -1,28 +1,17 @@
 using UnityEngine;
-public abstract class PlayerState : State<PlayerStateEnum>
+public abstract class PlayerState : HState<PlayerStateEnum>
 {
     protected Player player;
     protected PlayerFSM fsm;
     protected PlayerInputs playerInputs;
-    protected PlayerState subState;
-    protected PlayerState superState;
 
-    public PlayerState(PlayerStateEnum pse, Player player)
+    public PlayerState(PlayerStateEnum id, Player player)
     {
-        id = pse;
+        this.id = id;
         this.player = player;
         playerInputs = player.GetComponent<PlayerInputs>();
         fsm = player.Fsm;
+        currentChildState = PlayerStateEnum.NONE;
+        currentParentState = PlayerStateEnum.NONE;
     } 
-
-    protected void SetSuperState(PlayerState superState)
-    {
-        this.superState = superState;
-    }  
-
-    protected void SetSubState(PlayerState subState)
-    {
-        this.subState = subState;
-        subState.SetSuperState(this.subState);
-    }  
 }

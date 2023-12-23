@@ -5,7 +5,8 @@ public class MovePlayerState : PlayerState
     private float _speed;
     private CharacterController _controller;
 
-    public MovePlayerState(Player player): base(PlayerStateEnum.MOVE, player)
+    public MovePlayerState(Player player)
+	: base(PlayerStateEnum.MOVE, player)
     {
         _controller = player.GetComponent<CharacterController>();;
     }
@@ -69,6 +70,7 @@ public class MovePlayerState : PlayerState
 
     protected override void CheckTransitions()
     {
-
     }
+
+	protected override void FindChildState() {}
 }
