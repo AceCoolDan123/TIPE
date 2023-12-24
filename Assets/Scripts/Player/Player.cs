@@ -77,6 +77,7 @@ public class Player : MonoBehaviour
   private void Start() 
   {
     SetupStates();
+    MoveSpeed = 4f;
   }
   private void Update() 
   {
@@ -94,15 +95,15 @@ public class Player : MonoBehaviour
     //Init all player states
     LookPlayerState lookState = new LookPlayerState(this);
     GroundedPlayerState groundedState = new GroundedPlayerState(this);
-    MovePlayerState moveState = new MovePlayerState(this);
     JumpPlayerState jumpState = new JumpPlayerState(this);
+    MovePlayerState moveState = new MovePlayerState(this);
 
-    _fsm.AddState(moveState);
     _fsm.AddState(lookState);
+    _fsm.AddState(groundedState);
     _fsm.AddState(jumpState);
+    _fsm.AddState(moveState);
        
     _fsm.SetRootState(PlayerStateEnum.LOOK); 
   }
   #endregion
-
 }

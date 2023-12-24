@@ -135,8 +135,8 @@ GameObject:
   - component: {fileID: 260076}
   - component: {fileID: 260075}
   - component: {fileID: 260074}
-  m_Layer: 0
-  m_Name: building
+  m_Layer: 6
+  m_Name: Cube 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -221,7 +221,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 260073}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -3.19, y: 0.51, z: -2.63}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -241,7 +241,7 @@ GameObject:
   - component: {fileID: 154803348}
   - component: {fileID: 154803347}
   m_Layer: 0
-  m_Name: Player_FBX
+  m_Name: Player FBX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -347,8 +347,8 @@ GameObject:
   - component: {fileID: 422663835}
   - component: {fileID: 422663834}
   - component: {fileID: 422663833}
-  m_Layer: 0
-  m_Name: building (1)
+  m_Layer: 6
+  m_Name: Cube 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -433,7 +433,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 422663832}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 3.39, y: 0.51, z: 3.84}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -563,7 +563,7 @@ Transform:
   m_GameObject: {fileID: 850466909}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.857, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -585,14 +585,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 4
   sprintSpeed: 6
-  rotationXSpeed: 1
-  rotationYSpeed: 1
+  rotationXSpeed: 0.5
+  rotationYSpeed: 0.5
   speedChangeRate: 10
   jumpHeight: 1.2
   gravity: -15
   jumpTimeout: 0.1
-  fallTimeout: 0.15
-  groundedOffset: -0.14
+  fallTimeout: 0.25
+  groundedOffset: -0.6
   groundedRadius: 0.5
   GroundLayers:
     serializedVersion: 2
@@ -810,7 +810,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.562, z: 0}
+  m_LocalPosition: {x: 0, y: 1.7049999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1011,7 +1011,7 @@ GameObject:
   - component: {fileID: 2082175451}
   - component: {fileID: 2082175452}
   m_Layer: 0
-  m_Name: Player_Camera
+  m_Name: Player Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1079,6 +1079,6 @@ SceneRoots:
   - {fileID: 963194228}
   - {fileID: 705507995}
   - {fileID: 850466910}
-  - {fileID: 1763938042}
-  - {fileID: 260077}
   - {fileID: 422663836}
+  - {fileID: 260077}
+  - {fileID: 1763938042}

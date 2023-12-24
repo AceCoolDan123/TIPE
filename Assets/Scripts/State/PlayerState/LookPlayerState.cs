@@ -13,10 +13,7 @@ public class LookPlayerState : PlayerState
         this.player = player;
     }
 
-    public override void OnEnter() 
-	{
-		FindChildState();
-	}
+    public override void OnEnter() {}
     public override void OnUpdate() {}
     public override void OnLateUpdate() 
     {
@@ -54,8 +51,8 @@ public class LookPlayerState : PlayerState
 
     protected override void CheckTransitions() {}
 
-	protected override void FindChildState()
+	public override void FindChildState()
 	{
-		currentChildState = PlayerStateEnum.GROUNDED;
+		fsm.SetParentChildRelation(id, PlayerStateEnum.GROUNDED);
 	}
 }

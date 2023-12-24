@@ -1,10 +1,10 @@
 public abstract class HState<T> : State<T> 
 {
-    protected T currentChildState;
-    protected T currentParentState;
+    protected T currentChildStateID;
+    protected T currentParentStateID;
 
-    public T CurrentChildState { get { return currentChildState; } }
-    public T CurrentParentState { get { return currentParentState; } }
+    public T CurrentChildStateID { get { return currentChildStateID; } set { currentChildStateID = value; } }
+    public T CurrentParentStateID { get { return currentParentStateID; } set { currentParentStateID = value; } }
 
-    protected abstract void FindChildState();
+    public abstract void FindChildState();
 }

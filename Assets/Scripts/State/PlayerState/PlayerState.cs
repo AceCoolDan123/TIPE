@@ -11,7 +11,7 @@ public abstract class PlayerState : HState<PlayerStateEnum>
         this.player = player;
         playerInputs = player.GetComponent<PlayerInputs>();
         fsm = player.Fsm;
-        currentChildState = PlayerStateEnum.NONE;
-        currentParentState = PlayerStateEnum.NONE;
+        currentChildStateID = PlayerStateEnum.NONE;
+        currentParentStateID = PlayerStateEnum.NONE;
     } 
 }

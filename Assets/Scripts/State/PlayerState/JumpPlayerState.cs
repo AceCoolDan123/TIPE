@@ -3,21 +3,17 @@ public class JumpPlayerState : PlayerState
 {
 	private const float _terminalVelocity = 53.0f;
     private bool _isGrounded;
-    public JumpPlayerState(Player player)
-    : base(PlayerStateEnum.JUMP, player) {}
+    public JumpPlayerState(Player player): base(PlayerStateEnum.JUMP, player) {}
 
     public override void OnEnter() 
     {
+        Debug.Log("Enter Jump state");
         // JUMP forest !!!
 		// the square root of H * -2 * G = how much velocity needed to reach desired height
         player.VerticalVelocity = Mathf.Sqrt(player.JumpHeight * -2f * player.Gravity);
 
         // reset the jump timeout timer
         player.JumpTimeoutDelta = player.JumpTimeout;
-        // if we are not grounded, do not jump
-		playerInputs.jump = false;
-
-        FindChildState();
     }
     public override void OnUpdate() 
     {
@@ -30,6 +26,7 @@ public class JumpPlayerState : PlayerState
     public override void OnExit() 
     {
         player.FallTimeoutDelta = player.FallTimeout;
+        Debug.Log("Exit Jump state");
     }
 
     private void Falling()
@@ -49,7 +46,7 @@ public class JumpPlayerState : PlayerState
     private void GroundedCheck()
 	{
 		// set sphere position, with offset
-		Vector3 spherePosition = new Vector3(player.transform.position.x, player.transform.position.y - player.GroundedOffset, player.transform.position.z);
+		Vector3 spherePosition = new Vector3(player.transform.position.x, player.transform.position.y + player.GroundedOffset, player.transform.position.z);
 		_isGrounded = Physics.CheckSphere(spherePosition, player.GroundedRadius, player.GroundLayers, QueryTriggerInteraction.Ignore);
 	}
 
@@ -57,13 +54,12 @@ public class JumpPlayerState : PlayerState
     {
         if(_isGrounded)
         {
-            //fsm.SetCurrentState(PlayerStateEnum.GROUNDED);
+            fsm.ChangeState(id, PlayerStateEnum.GROUNDED);
         }
     } 
 
-    protected override void FindChildState()
+    public override void FindChildState()
     {
-        currentChildState = PlayerStateEnum.MOVE;
-        
+        fsm.SetParentChildRelation(id, PlayerStateEnum.MOVE);    
     }
 }

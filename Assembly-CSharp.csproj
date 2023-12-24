@@ -48,6 +48,7 @@
      <Compile Include="Assets\Scripts\StateMachine\PlayerHFSM.cs" />
      <Compile Include="Assets\Scripts\StateMachine\GenericHFSM.cs" />
      <Compile Include="Assets\Scripts\State\PlayerState\MovePlayerState.cs" />
+     <Compile Include="Assets\Scripts\StateMachine\GenericFSM.cs" />
      <Compile Include="Assets\Scripts\State\HState.cs" />
      <Compile Include="Assets\Scripts\State\PlayerState\GroundedPlayerState.cs" />
      <Compile Include="Assets\Scripts\FirstPersonController.cs" />

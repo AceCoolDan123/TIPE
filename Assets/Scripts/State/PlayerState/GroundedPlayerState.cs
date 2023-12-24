@@ -1,14 +1,11 @@
 using UnityEngine;
 public class GroundedPlayerState : PlayerState
 {
-  public GroundedPlayerState(Player player)
-  : base(PlayerStateEnum.GROUNDED, player)
-  {
-  }
+  public GroundedPlayerState(Player player): base(PlayerStateEnum.GROUNDED, player) {}
 
   public override void OnEnter() 
   {
-    FindChildState();
+    Debug.Log("Enter Grounded State");
   }
   public override void OnUpdate() 
   {
@@ -16,7 +13,10 @@ public class GroundedPlayerState : PlayerState
     CheckTransitions();
   }
   public override void OnLateUpdate() {}
-  public override void OnExit() {}
+  public override void OnExit() 
+  { 
+    Debug.Log("Exit Grounded State");
+  }
 
   private void Grounded()
   {
@@ -36,13 +36,12 @@ public class GroundedPlayerState : PlayerState
   {
     if (playerInputs.jump && player.JumpTimeoutDelta <= 0.0f)
 		{
-      //fsm.SetCurrentState(PlayerStateEnum.JUMP);
+      fsm.ChangeState(id, PlayerStateEnum.JUMP);
 		}
   }
 
-  protected override void FindChildState()
+  public override void FindChildState()
   {
-    currentChildState = PlayerStateEnum.MOVE;
-
+    fsm.SetParentChildRelation(id, PlayerStateEnum.MOVE);
   }
 }

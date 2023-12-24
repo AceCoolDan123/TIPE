@@ -5,8 +5,7 @@ public class MovePlayerState : PlayerState
     private float _speed;
     private CharacterController _controller;
 
-    public MovePlayerState(Player player)
-	: base(PlayerStateEnum.MOVE, player)
+    public MovePlayerState(Player player): base(PlayerStateEnum.MOVE, player)
     {
         _controller = player.GetComponent<CharacterController>();;
     }
@@ -28,12 +27,9 @@ public class MovePlayerState : PlayerState
         // set target speed based on move speed, sprint speed and if sprint is pressed
 			// a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 			// note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
-			// if there is no input, set the target speed to 0
-			if (playerInputs.move == Vector2.zero) player.MoveSpeed = 0.0f;
 
 			// a reference to the players current horizontal velocity
 			float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
-
 			float speedOffset = 0.1f;
 			
             float inputMagnitude = playerInputs.analogMovement ? playerInputs.move.magnitude : 1f;
@@ -72,5 +68,5 @@ public class MovePlayerState : PlayerState
     {
     }
 
-	protected override void FindChildState() {}
+	public override void FindChildState() {}
 }
