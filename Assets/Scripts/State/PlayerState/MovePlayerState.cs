@@ -33,6 +33,7 @@ public class MovePlayerState : PlayerState
 			float speedOffset = 0.1f;
 			
             float inputMagnitude = playerInputs.analogMovement ? playerInputs.move.magnitude : 1f;
+			Debug.Log(inputMagnitude);
 
 			// accelerate or decelerate to target speed
 			if (currentHorizontalSpeed < player.MoveSpeed - speedOffset || currentHorizontalSpeed > player.MoveSpeed + speedOffset)
@@ -59,7 +60,6 @@ public class MovePlayerState : PlayerState
 				// move
 				inputDirection = player.transform.right * playerInputs.move.x + player.transform.forward * playerInputs.move.y;
 			}
-
 			// move the player
 			_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, player.VerticalVelocity, 0.0f) * Time.deltaTime);
     }

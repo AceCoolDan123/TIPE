@@ -7,7 +7,6 @@ public class JumpPlayerState : PlayerState
 
     public override void OnEnter() 
     {
-        Debug.Log("Enter Jump state");
         // JUMP forest !!!
 		// the square root of H * -2 * G = how much velocity needed to reach desired height
         player.VerticalVelocity = Mathf.Sqrt(player.JumpHeight * -2f * player.Gravity);
@@ -26,7 +25,6 @@ public class JumpPlayerState : PlayerState
     public override void OnExit() 
     {
         player.FallTimeoutDelta = player.FallTimeout;
-        Debug.Log("Exit Jump state");
     }
 
     private void Falling()

@@ -5,7 +5,6 @@ public class GroundedPlayerState : PlayerState
 
   public override void OnEnter() 
   {
-    Debug.Log("Enter Grounded State");
   }
   public override void OnUpdate() 
   {
@@ -15,7 +14,6 @@ public class GroundedPlayerState : PlayerState
   public override void OnLateUpdate() {}
   public override void OnExit() 
   { 
-    Debug.Log("Exit Grounded State");
   }
 
   private void Grounded()
