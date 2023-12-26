@@ -49,11 +49,16 @@
      <Compile Include="Assets\Scripts\StateMachine\PlayerHFSM.cs" />
      <Compile Include="Assets\Scripts\StateMachine\GenericHFSM.cs" />
      <Compile Include="Assets\Scripts\State\PlayerState\MovePlayerState.cs" />
+     <Compile Include="Assets\Scripts\GOAP\ActionType.cs" />
      <Compile Include="Assets\Scripts\StateMachine\GenericFSM.cs" />
+     <Compile Include="Assets\Scripts\StateMachine\GoapFSM.cs" />
+     <Compile Include="Assets\Scripts\GOAP\World.cs" />
      <Compile Include="Assets\Scripts\State\HState.cs" />
      <Compile Include="Assets\Scripts\State\PlayerState\GroundedPlayerState.cs" />
+     <Compile Include="Assets\Scripts\GOAP\Planning.cs" />
      <Compile Include="Assets\Scripts\Old\FirstPersonController.cs" />
      <Compile Include="Assets\InputSystem\PlayerActions.cs" />
+     <Compile Include="Assets\Scripts\AI\Hider.cs" />
     <Reference Include="UnityEngine">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2022.3.9f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
