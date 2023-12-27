@@ -23,6 +23,8 @@ public class FluidRender : MonoBehaviour
 
     void Start()
     {
+        _size = (n+2)*(n+2);
+        _dens = new float[_size];
         mainCam = Camera.main;
         texture = new Texture2D(n+2, n+2, TextureFormat.RGBAHalf, false);
         material.SetTexture("_MainTex", texture);
@@ -44,9 +46,20 @@ public class FluidRender : MonoBehaviour
     
     /* Returns the ID of the cell nearest to the input position. */
     private Vector2Int GetIdFromPosition(Vector3 p) {
-        p += 0.5f * Vector3.one;
-        p *= (n+2);
-        return new Vector2Int((int)p.x, (int)p.y);
+        Ray ray = mainCam.ScreenPointToRay(_mouseScreenPos);
+        RaycastHit hit;
+
+        int indiceX = 0;
+        int indiceY = 0;
+        if (Physics.Raycast(ray, out hit))
+        {
+            Vector3 positionImpact = hit.point;
+            Debug.Log((positionImpact.x, positionImpact.y));
+            indiceX = Mathf.FloorToInt(positionImpact.x / (texture.width / n+2));
+            indiceY = Mathf.FloorToInt(positionImpact.y / (texture.width / n+2));
+        }
+
+        return new Vector2Int(indiceX, indiceY);
     }
     public void OnMousePosition(InputAction.CallbackContext cxt)
     {
@@ -56,22 +69,22 @@ public class FluidRender : MonoBehaviour
         UnityEngine.Color[] tmp = texture.GetPixels(0);
         
         for (int i = 0; i < tmp.Length; i++) {
-            Debug.Log(tmp[i]);
             tmp[i] = new UnityEngine.Color(_dens[i], _dens[i], _dens[i], 1f);
-            Debug.Log(tmp[i]);
         }
 
         texture.SetPixels(tmp, 0);
         texture.Apply();
     }
-    private void GetFromUI() {
-        int x = GetIdFromPosition(GetMousePos()).x;
-        int y = GetIdFromPosition(GetMousePos()).y;
-
+    private void GetFromUI()
+    {
+        Vector2Int coord = GetIdFromPosition(GetMousePos());
+        int x = coord.x;
+        int y = coord.y;
         if (x < 1 || x > n || y < 1 || y > n) {
             return;
         } 
         _dens[x + y*(n+2)] = source;
+        Debug.Log((x,y));
 
     }
 }
