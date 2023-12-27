@@ -112,6 +112,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Fluid",
+            "id": "76c24b3f-3c2e-4e46-aac4-49db4ccaeecf",
+            "actions": [
+                {
+                    "name": "mousePosition",
+                    "type": "Value",
+                    "id": "2ee59af2-de9a-430a-8c41-f9865dffa359",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "929e4be9-4595-493e-bfde-5a55d79cbb63",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "mousePosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

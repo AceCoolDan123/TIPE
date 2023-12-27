@@ -134,6 +134,34 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Fluid"",
+            ""id"": ""76c24b3f-3c2e-4e46-aac4-49db4ccaeecf"",
+            ""actions"": [
+                {
+                    ""name"": ""mousePosition"",
+                    ""type"": ""Value"",
+                    ""id"": ""2ee59af2-de9a-430a-8c41-f9865dffa359"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""929e4be9-4595-493e-bfde-5a55d79cbb63"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""mousePosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -143,6 +171,9 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         m_Gameplay_Movement = m_Gameplay.FindAction("Movement", throwIfNotFound: true);
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
         m_Gameplay_Look = m_Gameplay.FindAction("Look", throwIfNotFound: true);
+        // Fluid
+        m_Fluid = asset.FindActionMap("Fluid", throwIfNotFound: true);
+        m_Fluid_mousePosition = m_Fluid.FindAction("mousePosition", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -262,10 +293,60 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         }
     }
     public GameplayActions @Gameplay => new GameplayActions(this);
+
+    // Fluid
+    private readonly InputActionMap m_Fluid;
+    private List<IFluidActions> m_FluidActionsCallbackInterfaces = new List<IFluidActions>();
+    private readonly InputAction m_Fluid_mousePosition;
+    public struct FluidActions
+    {
+        private @PlayerActions m_Wrapper;
+        public FluidActions(@PlayerActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @mousePosition => m_Wrapper.m_Fluid_mousePosition;
+        public InputActionMap Get() { return m_Wrapper.m_Fluid; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(FluidActions set) { return set.Get(); }
+        public void AddCallbacks(IFluidActions instance)
+        {
+            if (instance == null || m_Wrapper.m_FluidActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_FluidActionsCallbackInterfaces.Add(instance);
+            @mousePosition.started += instance.OnMousePosition;
+            @mousePosition.performed += instance.OnMousePosition;
+            @mousePosition.canceled += instance.OnMousePosition;
+        }
+
+        private void UnregisterCallbacks(IFluidActions instance)
+        {
+            @mousePosition.started -= instance.OnMousePosition;
+            @mousePosition.performed -= instance.OnMousePosition;
+            @mousePosition.canceled -= instance.OnMousePosition;
+        }
+
+        public void RemoveCallbacks(IFluidActions instance)
+        {
+            if (m_Wrapper.m_FluidActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IFluidActions instance)
+        {
+            foreach (var item in m_Wrapper.m_FluidActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_FluidActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public FluidActions @Fluid => new FluidActions(this);
     public interface IGameplayActions
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
+    }
+    public interface IFluidActions
+    {
+        void OnMousePosition(InputAction.CallbackContext context);
     }
 }
