@@ -54,17 +54,14 @@ public class FluidRender : MonoBehaviour
     }
     /*************************  Dessins  ************************************/
     private void DrawDensity() {
-        var mip1Data = texture.GetPixelData<Color32>(0);
-        Debug.Log(mip1Data.Length);
-        // Fill pixels in mipmap level 1 with white
-        for (int i = 0; i < mip1Data.Length; i++)
+        UnityEngine.Color[] tmp = texture.GetPixels(0);
+        int tmpLength = tmp.Length;
+        for (int i = 0; i < tmpLength; i++)
         {
-            var newCol = (byte)(_dens[i/2] / 100 * 255);
-            mip1Data[i] = new Color32(255, 255, 255, newCol);
+            tmp[i] = new UnityEngine.Color(_dens[i], _dens[i], _dens[i], 1f);
         }
-
-        // Copy the texture changes to the GPU
-        texture.Apply(false);
+        texture.SetPixels(tmp, 0);
+        texture.Apply();
     }
     /*************************UI Inputs************************************/
     private void GetFromUI()
