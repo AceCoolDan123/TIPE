@@ -54,18 +54,22 @@ public class FluidRender : MonoBehaviour
     }
     /*************************  Dessins  ************************************/
     private void DrawDensity() {
-        UnityEngine.Color[] tmp = texture.GetPixels(0);
-        int tmpLength = tmp.Length;
-        for (int i = 0; i < tmpLength; i++) {
-            tmp[i] = new UnityEngine.Color(_dens[i], _dens[i], _dens[i], 1f);
+        var mip1Data = texture.GetPixelData<Color32>(0);
+        Debug.Log(mip1Data.Length);
+        // Fill pixels in mipmap level 1 with white
+        for (int i = 0; i < mip1Data.Length; i++)
+        {
+            var newCol = (byte)(_dens[i/2] / 100 * 255);
+            mip1Data[i] = new Color32(255, 255, 255, newCol);
         }
 
-        texture.SetPixels(tmp, 0);
-        texture.Apply();
+        // Copy the texture changes to the GPU
+        texture.Apply(false);
     }
     /*************************UI Inputs************************************/
     private void GetFromUI()
     {
+        if (!Mouse.current.leftButton.isPressed) return;
         Vector2Int coord = GetIdFromPosition(GetMousePos());
         int x = coord.x;
         int y = coord.y;
@@ -90,7 +94,6 @@ public class FluidRender : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             Vector3 positionImpact = gameObject.transform.InverseTransformPoint(hit.point);
-            Debug.Log(positionImpact);
             positionImpact += new Vector3(5f, 0f, 5f); // On suppose que le plane est toujours carré 
             indiceX = Mathf.FloorToInt((10f - positionImpact.x) * (n+2)/10f);
             indiceY = Mathf.FloorToInt((10f - positionImpact.z) * (n+2)/10f);
