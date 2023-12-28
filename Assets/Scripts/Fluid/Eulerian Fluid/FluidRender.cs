@@ -16,6 +16,7 @@ public class FluidRender : MonoBehaviour
     public int n = 32;
     public float source = 100f;
     public float diff = 0.1f;
+    public float visc = 0.1f;
     
     /* Pour le rendu de la texture et les jolies dessins */
     private Texture2D texture;
@@ -62,7 +63,11 @@ public class FluidRender : MonoBehaviour
     void Update()
     {
         GetFromUI();
-        if (simulating) fluidCalculs.dens_step(n, ref _dens, ref _densPrev, ref _velX, ref _velY,diff,Time.deltaTime);
+        if (simulating)
+        {
+            fluidCalculs.dens_step(n, ref _dens, ref _densPrev, ref _velX, ref _velY,diff,Time.deltaTime);
+            fluidCalculs.vel_step(n, ref _velX, ref _velY, ref _velXPrev, ref _velYPrev, visc, Time.deltaTime);
+        }
         DrawDensity();
     }
     /* Gérée par l'input system */

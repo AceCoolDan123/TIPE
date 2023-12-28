@@ -12,6 +12,20 @@ public class FluidCalculs : MonoBehaviour
         SWAP(ref x0, ref x);
         advect(N, 0, ref x, ref x0, ref vx, ref vy, dt);
     }
+
+    public void vel_step(int N, ref float[] vx, ref float[] vy, ref float[] vx0, ref float[] vy0, float visc, float dt)
+    {
+        add_source(N,ref vx, ref vx0, dt);
+        add_source(N,ref vy, ref vy0, dt);
+        SWAP(ref vx0, ref vx); diffuse(N, 1, ref vx, ref vx0, visc, dt);
+        SWAP(ref vy0, ref vy); diffuse(N, 2, ref vy, ref vy0, visc, dt);
+        project(N,ref vx,ref vy,ref vx0, ref vy0);
+        SWAP(ref vx0, ref vx); SWAP(ref vy0, ref vy);
+        advect(N,1,ref vx,ref vx0, ref vx0, ref vy0, dt); advect(N,2,ref vy,ref vy0, ref vx0, ref vy0, dt);
+        project(N,ref vx,ref vy,ref vx0, ref vy0);
+    }
+    
+    /******************** FONCTIONS PRIVEES ******************************/
     private void add_source(int N, ref float[] x, ref float[] s, float dt)
     {
         int size = (N + 2) * (N + 2); 
@@ -66,6 +80,42 @@ public class FluidCalculs : MonoBehaviour
             }
         }
     }
+    /* Unique a la vitesse */
+    private void project(int N, ref float[] u, ref float[] v, ref float[] p, ref float[] div)
+    {
+        float h = 1f / N;
+        for (int i = 1; i <= N; i++)
+        {
+            for (int j = 1; j <= N; j++)
+            {
+                div[IX(i, j, N)] = -0.5f * h * (u[(IX(i + 1, j, N))] - u[IX(i - 1, j, N)] + v[IX(i, j + 1, N)] - v[IX(i, j - 1, N)]);
+                p[IX(i, j, N)] = 0;
+            }
+        }
+
+        for (int k = 0; k < 20; k++)
+        {
+            for (int i = 1; i <= N; i++)
+            {
+                for (int j = 1; j <= N; j++)
+                {
+                    p[IX(i, j, N)] = (div[IX(i, j, N)] + p[IX(i + 1, j, N)] + p[IX(i - 1, j, N)] + 
+                                      p[IX(i, j + 1, N)] + p[IX(i, j - 1, N)]) / 4;
+                }
+            }
+        }
+
+        for (int i = 1; i <= N; i++)
+        {
+            for (int j = 1; j <= N; j++)
+            {
+                u[IX(i, j, N)] -= 0.5f * (p[IX(i + 1, j, N)] - p[IX(i - 1, j, N)]) / h;
+                v[IX(i, j, N)] -= 0.5f * (p[IX(i, j + 1, N)] - p[IX(i, j - 1, N)]) / h;
+            }
+        }
+    }
+    
+    /******************** MACROS ******************************/
     private int IX(int i, int j, int N)
     {
         return i + (N + 2) * j;
