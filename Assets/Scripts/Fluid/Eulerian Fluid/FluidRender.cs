@@ -53,10 +53,10 @@ public class FluidRender : MonoBehaviour
         int indiceY = 0;
         if (Physics.Raycast(ray, out hit))
         {
-            Vector3 positionImpact = hit.point;
-            Debug.Log((positionImpact.x, positionImpact.y));
-            indiceX = Mathf.FloorToInt(positionImpact.x / (texture.width / n+2));
-            indiceY = Mathf.FloorToInt(positionImpact.y / (texture.width / n+2));
+            Vector3 positionImpact = gameObject.transform.InverseTransformPoint(hit.point);
+            positionImpact += new Vector3(5f, 0f, 5f); // On suppose que le plane est toujours carré de côté 10x10 
+            indiceX = Mathf.FloorToInt((10f - positionImpact.x) * (n+2)/10);
+            indiceY = Mathf.FloorToInt((10f - positionImpact.z) * (n+2)/10);
         }
 
         return new Vector2Int(indiceX, indiceY);
@@ -67,8 +67,8 @@ public class FluidRender : MonoBehaviour
     }
     private void DrawDensity() {
         UnityEngine.Color[] tmp = texture.GetPixels(0);
-        
-        for (int i = 0; i < tmp.Length; i++) {
+        int tmpLength = tmp.Length;
+        for (int i = 0; i < tmpLength; i++) {
             tmp[i] = new UnityEngine.Color(_dens[i], _dens[i], _dens[i], 1f);
         }
 
@@ -78,6 +78,7 @@ public class FluidRender : MonoBehaviour
     private void GetFromUI()
     {
         Vector2Int coord = GetIdFromPosition(GetMousePos());
+        Debug.Log(coord);
         int x = coord.x;
         int y = coord.y;
         if (x < 1 || x > n || y < 1 || y > n) {
