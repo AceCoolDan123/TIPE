@@ -12,6 +12,7 @@ public class FluidRender : MonoBehaviour
     [Header("Paramètres de Simulation")]
     public int n = 32;
     public float source = 100f;
+    public float diff = 0.1f;
     
     /* Pour le rendu de la texture et les jolies dessins */
     private Texture2D texture;
@@ -24,10 +25,12 @@ public class FluidRender : MonoBehaviour
     /* Tableaux simulation */
     private int _size; // Taille initialisée dans start
     private float[] _dens;
+    private float[] _densPrev;
 
-
+    private FluidCalculs fluidCalculs; 
     void Start()
     {
+        fluidCalculs = gameObject.GetComponent<FluidCalculs>();
         /* Infos générales de l'environnement */
         mainCam = Camera.main;
         Renderer objectRenderer = GetComponent<Renderer>();
@@ -36,6 +39,7 @@ public class FluidRender : MonoBehaviour
         /* Création des tableaux */ 
         _size = (n+2)*(n+2);
         _dens = new float[_size];
+        _densPrev = new float[_size];
         /* Texture dans le matériau */
         texture = new Texture2D(n+2, n+2, TextureFormat.RGBAHalf, false);
         material.SetTexture("_MainTex", texture);
@@ -45,6 +49,8 @@ public class FluidRender : MonoBehaviour
     void Update()
     {
         GetFromUI();
+        fluidCalculs.add_source(n,ref _dens, ref _densPrev, Time.deltaTime);
+        fluidCalculs.diffuse(n, 0, ref _dens, ref _densPrev, diff, Time.deltaTime);
         DrawDensity();
     }
     /* Gérée par l'input system */
@@ -73,7 +79,7 @@ public class FluidRender : MonoBehaviour
         if (x < 1 || x > n || y < 1 || y > n) {
             return;
         } 
-        _dens[x + y*(n+2)] = source;
+        _densPrev[x + y*(n+2)] = source;
 
     }
     private Vector3 GetMousePos()
