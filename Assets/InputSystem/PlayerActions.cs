@@ -147,6 +147,15 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""mouseDelta"",
+                    ""type"": ""Value"",
+                    ""id"": ""f3ae2d1a-9d50-4386-9d09-712e948e5efc"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -158,6 +167,17 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""mousePosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""884ede1f-f765-46e8-9501-f297ae0d5180"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""mouseDelta"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -174,6 +194,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         // Fluid
         m_Fluid = asset.FindActionMap("Fluid", throwIfNotFound: true);
         m_Fluid_mousePosition = m_Fluid.FindAction("mousePosition", throwIfNotFound: true);
+        m_Fluid_mouseDelta = m_Fluid.FindAction("mouseDelta", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -298,11 +319,13 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Fluid;
     private List<IFluidActions> m_FluidActionsCallbackInterfaces = new List<IFluidActions>();
     private readonly InputAction m_Fluid_mousePosition;
+    private readonly InputAction m_Fluid_mouseDelta;
     public struct FluidActions
     {
         private @PlayerActions m_Wrapper;
         public FluidActions(@PlayerActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @mousePosition => m_Wrapper.m_Fluid_mousePosition;
+        public InputAction @mouseDelta => m_Wrapper.m_Fluid_mouseDelta;
         public InputActionMap Get() { return m_Wrapper.m_Fluid; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -315,6 +338,9 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @mousePosition.started += instance.OnMousePosition;
             @mousePosition.performed += instance.OnMousePosition;
             @mousePosition.canceled += instance.OnMousePosition;
+            @mouseDelta.started += instance.OnMouseDelta;
+            @mouseDelta.performed += instance.OnMouseDelta;
+            @mouseDelta.canceled += instance.OnMouseDelta;
         }
 
         private void UnregisterCallbacks(IFluidActions instance)
@@ -322,6 +348,9 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @mousePosition.started -= instance.OnMousePosition;
             @mousePosition.performed -= instance.OnMousePosition;
             @mousePosition.canceled -= instance.OnMousePosition;
+            @mouseDelta.started -= instance.OnMouseDelta;
+            @mouseDelta.performed -= instance.OnMouseDelta;
+            @mouseDelta.canceled -= instance.OnMouseDelta;
         }
 
         public void RemoveCallbacks(IFluidActions instance)
@@ -348,5 +377,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
     public interface IFluidActions
     {
         void OnMousePosition(InputAction.CallbackContext context);
+        void OnMouseDelta(InputAction.CallbackContext context);
     }
 }

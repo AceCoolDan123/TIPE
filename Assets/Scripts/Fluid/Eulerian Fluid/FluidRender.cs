@@ -17,6 +17,7 @@ public class FluidRender : MonoBehaviour
     public float source = 100f;
     public float diff = 0.1f;
     public float visc = 0.1f;
+    public float force = 75f;
     
     /* Pour le rendu de la texture et les jolies dessins */
     private Texture2D texture;
@@ -24,6 +25,7 @@ public class FluidRender : MonoBehaviour
     
     /* Infos générales de l'environnement */
     private Vector2 _mouseScreenPos;
+    private Vector2 _mouseDelta;
     private Camera mainCam;
     
     /* Tableaux simulation */
@@ -75,6 +77,10 @@ public class FluidRender : MonoBehaviour
     {
         _mouseScreenPos = cxt.ReadValue<Vector2>();
     }
+    public void DeltaMouseValue(InputAction.CallbackContext cxt) 
+    {
+        _mouseDelta = cxt.ReadValue<Vector2>();
+    }
     /*************************  Dessins  ************************************/
     private void DrawDensity() {
         UnityEngine.Color[] tmp = texture.GetPixels(0);
@@ -89,7 +95,10 @@ public class FluidRender : MonoBehaviour
     /*************************UI Inputs************************************/
     private void GetFromUI()
     {
-        if (!Mouse.current.leftButton.isPressed) return;
+        bool left = Mouse.current.leftButton.isPressed;
+        bool right = Mouse.current.rightButton.isPressed;
+        if (!left && !right) return;
+        
         Vector2Int coord = GetIdFromPosition(GetMousePos());
         int x = coord.x;
         int y = coord.y;
@@ -97,11 +106,22 @@ public class FluidRender : MonoBehaviour
             return;
         }
 
-        if (simulating) _densPrev[x + y*(n+2)] = source;
+        if (simulating)
+        {
+            _densPrev[x + y * (n + 2)] = source;
+        }
         else
         {
-            _dens[x + y*(n+2)] = source;
-            _densPrev[x + y*(n+2)] = source;
+            if (left)
+            {
+                _dens[x + y * (n + 2)] = source;
+                _densPrev[x + y * (n + 2)] = source;
+            } else
+            {
+                _velXPrev[x + y * (n + 2)] = force * _mouseDelta.x * (n + 2);
+                _velYPrev[x + y * (n + 2)] = force * _mouseDelta.y * (n + 2);
+                
+            }
         }
         
 
