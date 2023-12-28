@@ -90,9 +90,10 @@ public class FluidRender : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             Vector3 positionImpact = gameObject.transform.InverseTransformPoint(hit.point);
-            positionImpact += new Vector3(5f, 0f, 5f); // On suppose que le plane est toujours carré de côté 10x10 
-            indiceX = Mathf.FloorToInt((objectSize.y - positionImpact.x) * (n+2)/objectSize.y);
-            indiceY = Mathf.FloorToInt((objectSize.x - positionImpact.z) * (n+2)/objectSize.x);
+            Debug.Log(positionImpact);
+            positionImpact += new Vector3(5f, 0f, 5f); // On suppose que le plane est toujours carré 
+            indiceX = Mathf.FloorToInt((10f - positionImpact.x) * (n+2)/10f);
+            indiceY = Mathf.FloorToInt((10f - positionImpact.z) * (n+2)/10f);
         }
 
         return new Vector2Int(indiceX, indiceY);
