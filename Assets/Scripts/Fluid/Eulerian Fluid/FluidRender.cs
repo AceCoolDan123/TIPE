@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,8 @@ public class FluidRender : MonoBehaviour
 {
     [Header("Obligatoire")]
     public Material material;
+
+    public bool simulating = false;
     [Header("Paramètres de Simulation")]
     public int n = 32;
     public float source = 100f;
@@ -26,6 +29,10 @@ public class FluidRender : MonoBehaviour
     private int _size; // Taille initialisée dans start
     private float[] _dens;
     private float[] _densPrev;
+    private float[] _velX;
+    private float[] _velY;
+    private float[] _velXPrev;
+    private float[] _velYPrev;
 
     private FluidCalculs fluidCalculs; 
     void Start()
@@ -36,10 +43,16 @@ public class FluidRender : MonoBehaviour
         Renderer objectRenderer = GetComponent<Renderer>();
         if (objectRenderer != null) objectSize = objectRenderer.bounds.size;
         else Debug.LogError("Le composant Renderer est manquant sur cet objet.");
+        
         /* Création des tableaux */ 
         _size = (n+2)*(n+2);
         _dens = new float[_size];
         _densPrev = new float[_size];
+        _velX = Enumerable.Repeat(0.5f, _size).ToArray();
+        _velY = new float[_size];
+        _velXPrev = new float[_size];
+        _velYPrev = new float[_size];
+        
         /* Texture dans le matériau */
         texture = new Texture2D(n+2, n+2, TextureFormat.RGBAHalf, false);
         material.SetTexture("_MainTex", texture);
@@ -49,8 +62,7 @@ public class FluidRender : MonoBehaviour
     void Update()
     {
         GetFromUI();
-        fluidCalculs.add_source(n,ref _dens, ref _densPrev, Time.deltaTime);
-        fluidCalculs.diffuse(n, 0, ref _dens, ref _densPrev, diff, Time.deltaTime);
+        if (simulating) fluidCalculs.dens_step(n, ref _dens, ref _densPrev, ref _velX, ref _velY,diff,Time.deltaTime);
         DrawDensity();
     }
     /* Gérée par l'input system */
@@ -78,8 +90,15 @@ public class FluidRender : MonoBehaviour
         int y = coord.y;
         if (x < 1 || x > n || y < 1 || y > n) {
             return;
-        } 
-        _densPrev[x + y*(n+2)] = source;
+        }
+
+        if (simulating) _densPrev[x + y*(n+2)] = source;
+        else
+        {
+            _dens[x + y*(n+2)] = source;
+            _densPrev[x + y*(n+2)] = source;
+        }
+        
 
     }
     private Vector3 GetMousePos()
