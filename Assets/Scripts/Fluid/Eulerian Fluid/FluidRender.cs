@@ -108,7 +108,15 @@ public class FluidRender : MonoBehaviour
 
         if (simulating)
         {
-            _densPrev[x + y * (n + 2)] = source;
+            if (left)
+            {
+                _densPrev[x + y * (n + 2)] = source;
+            }
+            else
+            {
+                _velXPrev[x + y * (n + 2)] = force * _mouseDelta.x * (n + 2);
+                _velYPrev[x + y * (n + 2)] = force * _mouseDelta.y * (n + 2);
+            }
         }
         else
         {
@@ -119,7 +127,9 @@ public class FluidRender : MonoBehaviour
             } else
             {
                 _velXPrev[x + y * (n + 2)] = force * _mouseDelta.x * (n + 2);
+                _velX[x + y * (n + 2)] = force * _mouseDelta.x * (n + 2);
                 _velYPrev[x + y * (n + 2)] = force * _mouseDelta.y * (n + 2);
+                _velY[x + y * (n + 2)] = force * _mouseDelta.y * (n + 2);
                 
             }
         }
