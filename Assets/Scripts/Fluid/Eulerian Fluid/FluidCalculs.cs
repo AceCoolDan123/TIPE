@@ -47,6 +47,7 @@ public class FluidCalculs : MonoBehaviour
                     x[IX(i, j, N)] = (x0[IX(i, j, N)] + a * (x[IX(i - 1, j, N)] + x[IX(i + 1, j, N)] + x[IX(i, j - 1, N)] + x[IX(i, j + 1, N)])) / (1 + 4 * a);
                 }
             }
+            set_bound(N, b, ref x);
         }
     }
 
@@ -79,6 +80,7 @@ public class FluidCalculs : MonoBehaviour
                                  s1 * (t0 * d0[IX(i1, j0, N)] + t1 * d0[IX(i1, j1, N)]);
             }
         }
+        set_bound(N, b, ref d);
     }
     /* Unique a la vitesse */
     private void project(int N, ref float[] u, ref float[] v, ref float[] p, ref float[] div)
@@ -92,6 +94,7 @@ public class FluidCalculs : MonoBehaviour
                 p[IX(i, j, N)] = 0;
             }
         }
+        set_bound(N, 0, ref div); set_bound(N, 0, ref p);
 
         for (int k = 0; k < 20; k++)
         {
@@ -103,6 +106,7 @@ public class FluidCalculs : MonoBehaviour
                                       p[IX(i, j + 1, N)] + p[IX(i, j - 1, N)]) / 4;
                 }
             }
+            set_bound(N, 0, ref p);
         }
 
         for (int i = 1; i <= N; i++)
@@ -113,6 +117,23 @@ public class FluidCalculs : MonoBehaviour
                 v[IX(i, j, N)] -= 0.5f * (p[IX(i, j + 1, N)] - p[IX(i, j - 1, N)]) / h;
             }
         }
+        set_bound(N, 1, ref u);set_bound(N, 2, ref v);
+    }
+    /* LIMITES */
+    private void set_bound(int N, int b, ref float[] x)
+    {
+        for (int i = 0; i < N; i++)
+        {
+            x[IX(0    , i  , N)] = b == 1 ? -x[IX(1, i, N)] : x[IX(1, i, N)];
+            x[IX(N + 1,i   , N)] = b == 1 ? -x[IX(N, i, N)] : x[IX(N, i, N)];
+            x[IX(i     , 0  , N)] = b == 2 ? -x[IX(i, 1, N)] : x[IX(i, 1, N)];
+            x[IX(i     , N+1, N)] = b == 2 ? -x[IX(i, N, N)] : x[IX(i, N, N)];
+        }
+
+        x[IX(0    , 0    , N)] = 0.5f * (x[IX(1, 0, N)] + x[IX(0, 1, N)]);
+        x[IX(0    , N + 1, N)] = 0.5f * (x[IX(1, N + 1, N)] + x[IX(0, N, N)]);
+        x[IX(N + 1, 0    , N)] = 0.5f * (x[IX(N, 0, N)] + x[IX(N + 1, 0, N)]);
+        x[IX(N + 1, N + 1, N)] = 0.5f * (x[IX(N, N + 1, N)] + x[IX(N + 1, N, N)]);
     }
     
     /******************** MACROS ******************************/

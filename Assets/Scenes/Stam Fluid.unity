@@ -384,8 +384,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: 7652a52595374374f96ef5212aac3a93, type: 2}
-  n: 64
+  simulating: 0
+  n: 100
   source: 100
+  diff: 0.74
+  visc: 0.8
+  force: 75
 --- !u!114 &1473938184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -439,6 +443,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 2ee59af2-de9a-430a-8c41-f9865dffa359
     m_ActionName: Fluid/mousePosition[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1473938183}
+        m_TargetAssemblyTypeName: FluidRender, Assembly-CSharp
+        m_MethodName: DeltaMouseValue
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: f3ae2d1a-9d50-4386-9d09-712e948e5efc
+    m_ActionName: Fluid/mouseDelta[/Mouse/delta]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Fluid

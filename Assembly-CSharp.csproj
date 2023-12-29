@@ -75,6 +75,7 @@
      <Folder Include="Assets\Scripts\State" />
      <Folder Include="Assets\Scripts\AI" />
      <Folder Include="Assets\Prefabs\Player" />
+     <Folder Include="Assets\Materials" />
      <Folder Include="Assets\InputSystem" />
      <Folder Include="Assets\Scripts\StateMachine" />
      <Folder Include="Assets\Prefabs" />

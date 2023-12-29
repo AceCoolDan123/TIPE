@@ -30,7 +30,7 @@ public class FluidRender : MonoBehaviour
     
     /* Tableaux simulation */
     private int _size; // Taille initialisée dans start
-    private float[] _dens;
+    public float[] _dens;
     private float[] _densPrev;
     private float[] _velX;
     private float[] _velY;
@@ -51,7 +51,7 @@ public class FluidRender : MonoBehaviour
         _size = (n+2)*(n+2);
         _dens = new float[_size];
         _densPrev = new float[_size];
-        _velX = Enumerable.Repeat(0.5f, _size).ToArray();
+        _velX = new float[_size];
         _velY = new float[_size];
         _velXPrev = new float[_size];
         _velYPrev = new float[_size];
@@ -67,8 +67,8 @@ public class FluidRender : MonoBehaviour
         GetFromUI();
         if (simulating)
         {
+            //fluidCalculs.vel_step(n, ref _velX, ref _velY, ref _velXPrev, ref _velYPrev, visc, Time.deltaTime);
             fluidCalculs.dens_step(n, ref _dens, ref _densPrev, ref _velX, ref _velY,diff,Time.deltaTime);
-            fluidCalculs.vel_step(n, ref _velX, ref _velY, ref _velXPrev, ref _velYPrev, visc, Time.deltaTime);
         }
         DrawDensity();
     }
@@ -126,10 +126,13 @@ public class FluidRender : MonoBehaviour
                 _densPrev[x + y * (n + 2)] = source;
             } else
             {
-                _velXPrev[x + y * (n + 2)] = force * _mouseDelta.x * (n + 2);
-                _velX[x + y * (n + 2)] = force * _mouseDelta.x * (n + 2);
-                _velYPrev[x + y * (n + 2)] = force * _mouseDelta.y * (n + 2);
-                _velY[x + y * (n + 2)] = force * _mouseDelta.y * (n + 2);
+                var ycomp = force * _mouseDelta.y * (n + 2);
+                var xcomp = force * _mouseDelta.x * (n + 2);
+                _velXPrev[x + y * (n + 2)] = xcomp;
+                _velX[x + y * (n + 2)] = xcomp;
+                _velYPrev[x + y * (n + 2)] = ycomp;
+                _velY[x + y * (n + 2)] = ycomp;
+                Debug.Log("vel changer in " + x + " , " + y + " for a value of " + xcomp +" , " + ycomp);
                 
             }
         }
