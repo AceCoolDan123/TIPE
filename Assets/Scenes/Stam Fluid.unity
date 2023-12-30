@@ -260,10 +260,9 @@ GameObject:
   - component: {fileID: 1473938180}
   - component: {fileID: 1473938179}
   - component: {fileID: 1473938178}
-  - component: {fileID: 1473938183}
-  - component: {fileID: 1473938182}
-  - component: {fileID: 1473938184}
+  - component: {fileID: 1473938186}
   - component: {fileID: 1473938185}
+  - component: {fileID: 1473938184}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -359,37 +358,6 @@ Transform:
   - {fileID: 435901621}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 90}
---- !u!114 &1473938182
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1473938177}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46e2583da60febb4dae597e7abae71be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1473938183
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1473938177}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da55aafa628a20042ad5becb95f699ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  material: {fileID: 2100000, guid: 7652a52595374374f96ef5212aac3a93, type: 2}
-  simulating: 0
-  n: 100
-  source: 100
-  diff: 0.74
-  visc: 0.8
-  force: 75
 --- !u!114 &1473938184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -429,9 +397,9 @@ MonoBehaviour:
     m_ActionName: Gameplay/Look[/Mouse/delta]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1473938183}
+      - m_Target: {fileID: 1473938177}
         m_TargetAssemblyTypeName: FluidRender, Assembly-CSharp
-        m_MethodName: OnMousePosition
+        m_MethodName: 
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -445,9 +413,9 @@ MonoBehaviour:
     m_ActionName: Fluid/mousePosition[/Mouse/position]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1473938183}
+      - m_Target: {fileID: 1473938177}
         m_TargetAssemblyTypeName: FluidRender, Assembly-CSharp
-        m_MethodName: DeltaMouseValue
+        m_MethodName: 
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -465,6 +433,26 @@ MonoBehaviour:
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &1473938185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1473938177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da55aafa628a20042ad5becb95f699ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: {fileID: 0}
+  simulating: 0
+  n: 32
+  source: 100
+  diff: 0.1
+  visc: 0.1
+  force: 75
+  _dens: []
+--- !u!114 &1473938186
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -3,8 +3,8 @@ using UnityEngine;
 public class Hider : MonoBehaviour
 {
     #region Variables
-    private World _worldSeen;
-    public World WorldSeen { get {return _worldSeen;} }
+    private HiderWorld _worldSeen;
+    public HiderWorld WorldSeen { get {return _worldSeen;} }
     #endregion
 
     #region Unity Methods
