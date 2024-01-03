@@ -4,7 +4,6 @@ public struct GenericActionsGraph<T> where T : struct
 {
     public readonly ActionType<T>[] states;
     public readonly int nbStates; 
-
     public readonly bool[][] transitions;
 
     public GenericActionsGraph(ActionType<T>[] states, int nbStates, bool[][] transitions)

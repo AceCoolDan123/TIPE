@@ -10,11 +10,11 @@ public abstract class Planning<T> where T : struct
     private readonly Goal[] _goals;
     private readonly GenericActionsGraph<T> _actionsGraph;
 
-    public Planning(Goal[] goals, int nbGoals, ActionType<T>[] states, int nbStates, bool[][] transitions)
+    public Planning(Goal[] goals, int nbGoals, ActionType<T>[] states, int nbStates)
     {
         Array.Copy(goals, _goals, nbGoals);
         _nbGoals = nbGoals;
-        _actionsGraph = new GenericActionsGraph<T>(states, nbStates, transitions);
+        _actionsGraph = new GenericActionsGraph<T>(states, nbStates, GenerateTransitions(states, nbStates));
     }
 
     // A* search
@@ -38,5 +38,32 @@ public abstract class Planning<T> where T : struct
         }
 
         return actionSequence;
+    }
+
+    private bool[][] GenerateTransitions(ActionType<T>[] states, int nbStates)
+    {
+        bool[][] transitions = new bool[nbStates][];
+        T worldBuffer;
+
+        for (int i = 0; i < nbStates; i ++)
+        {
+            transitions[i] = new bool[nbStates];
+
+            for (int j = 0; j < nbStates; j ++)
+            {
+                // an action can't have a transition to itself
+                if (i == j) 
+                { 
+                    transitions[i][j] = false;
+                    continue; 
+                }
+                worldBuffer = states[j].UnvalidWorld;
+                //if (worldBuffer)
+                //states.[i].Result(worldBuffer)
+                //if (states[i].Result)
+            }
+        }
+
+        return transitions;
     }
 }
