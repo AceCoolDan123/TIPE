@@ -1,5 +1,5 @@
 public struct HiderWorld
 {
-    float playerDistance;
-    bool isHide;
+    public float? playerDistance;
+    public bool? isHide;
 };

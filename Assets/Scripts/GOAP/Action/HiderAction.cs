@@ -10,5 +10,5 @@ public class HiderAction : ActionType<HiderWorld>
 
     public override void PerformAction() {}
 
-    public override void Result(HiderWorld world) {}
+    public override void ChangeWorld(ref HiderWorld world) {}
 }

@@ -18,5 +18,5 @@ public abstract class ActionType<T> where T : struct
     // perform the action on the real game, the preconditions are supposed to be satisfied
     public abstract void PerformAction();
     // modify its consequences on the world
-    public abstract void Result(T world);
+    public abstract void ChangeWorld(ref T world);
 }
