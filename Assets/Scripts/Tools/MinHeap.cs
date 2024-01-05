@@ -1,8 +1,10 @@
-public class MinHeap<T>
+
+using System;
+public class MinHeap
 {
     // 2*i : left child 
     // 2*i + 1: right child
-    private T[] _keys; 
+    private int[] _keys; 
     private int[] _heap;
     private int _count;
     public int Count { get { return _count; } }
@@ -19,7 +21,7 @@ public class MinHeap<T>
     private void swap(int i, int j)
     {
         int tmp = _heap[i];
-        T keyTmp = _keys[i];
+        int keyTmp = _keys[i];
         _heap[i] = _heap[j];
         _keys[i] = _keys[j];
         _heap[j] = tmp;
@@ -72,7 +74,7 @@ public class MinHeap<T>
     #endregion
 
     #region Methods
-    public void Add(T key, int priority)
+    public void Add(int key, int priority)
     {
         _heap[_count] = priority;
         _keys[_count] = key;
@@ -80,9 +82,9 @@ public class MinHeap<T>
         _count ++;
     }
 
-    public T TakeMin()
+    public int TakeMin()
     {
-        T res = _keys[0];
+        int res = _keys[0];
         _count --;
         _heap[0] = _heap[_count];
         _keys[0] = _keys[_count];
@@ -91,16 +93,38 @@ public class MinHeap<T>
     }
 
 
-    public void Update_priority(T key, int new_priority)
+    public void Update_priority(int key, int new_priority)
     {
         for (int i = 0; i < _count; i ++)
         {
-            if (key.Equals(_keys[i]))
+            if (_keys[i] == key)
             {
                 Update(i, new_priority);
                 break;
             }   
         }
+    }
+
+    public int GetPriority(int key)
+    {
+        for (int i = 0; i < _count; i ++)
+        {
+            if (_keys[i] == key)
+            {
+                return _heap[i];
+            }
+        }
+
+        return Int32.MaxValue;
+    }
+
+    public bool IsHere(int key)
+    {
+        for (int i = 0; i < _count; i ++)
+        {
+            if (_keys[i] == i) { return true; }
+        }
+        return false;
     }
     #endregion
 }

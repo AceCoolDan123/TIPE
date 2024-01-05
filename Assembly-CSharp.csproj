@@ -40,14 +40,15 @@
     <Analyzer Include="/home/dadidou/Programmes/Unity/Hub/Editor/2022.3.9f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets/Scripts/GOAP/ActionsGraph/GenericActionsGraph.cs" />
      <Compile Include="Assets/Scripts/State/PlayerState/JumpPlayerState.cs" />
-     <Compile Include="Assets/Scripts/GOAP/Planning/HiderPlanning.cs" />
+     <Compile Include="Assets/Scripts/GOAP/Action/GotoAction.cs" />
+     <Compile Include="Assets/Scripts/GOAP/World/World.cs" />
      <Compile Include="Assets/Scripts/Player/PlayerInputs.cs" />
      <Compile Include="Assets/Scripts/State/PlayerState/PlayerState.cs" />
      <Compile Include="Assets/Scripts/State/PlayerState/LookPlayerState.cs" />
      <Compile Include="Assets/Scripts/State/State.cs" />
      <Compile Include="Assets/Scripts/Player/Player.cs" />
+     <Compile Include="Assets/Scripts/GOAP/ActionsGraph/ActionsGraph.cs" />
      <Compile Include="Assets/Scripts/StateMachine/PlayerHFSM.cs" />
      <Compile Include="Assets/Scripts/Fluid/Eulerian Fluid/FluidCalculs.cs" />
      <Compile Include="Assets/Scripts/AI/Hider/Hider.cs" />
@@ -57,15 +58,14 @@
      <Compile Include="Assets/Scripts/GOAP/Planning/Planning.cs" />
      <Compile Include="Assets/Scripts/StateMachine/GenericFSM.cs" />
      <Compile Include="Assets/Scripts/StateMachine/GoapFSM.cs" />
-     <Compile Include="Assets/Scripts/GOAP/Action/HiderAction.cs" />
-     <Compile Include="Assets/Scripts/GOAP/World/HiderWorld.cs" />
+     <Compile Include="Assets/Scripts/AI/Entity.cs" />
      <Compile Include="Assets/Scripts/Tools/PriorityQueue.cs" />
      <Compile Include="Assets/Scripts/State/HState.cs" />
      <Compile Include="Assets/Scripts/State/PlayerState/GroundedPlayerState.cs" />
      <Compile Include="Assets/Scripts/Fluid/Eulerian Fluid/FluidRender.cs" />
-     <Compile Include="Assets/Scripts/GOAP/Action/ActionType.cs" />
      <Compile Include="Assets/Scripts/Old/FirstPersonController.cs" />
      <Compile Include="Assets/InputSystem/PlayerActions.cs" />
+     <Compile Include="Assets/Scripts/GOAP/Action/ActionClass.cs" />
     <Reference Include="UnityEngine">
         <HintPath>/home/dadidou/Programmes/Unity/Hub/Editor/2022.3.9f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
