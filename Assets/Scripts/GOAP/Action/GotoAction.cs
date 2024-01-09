@@ -4,7 +4,7 @@ using UnityEngine;
 public class GotoFluidAction : ActionClass
 {
     private CharacterController _controller;
-    public GotoFluidAction(World unvalidWorld, Action performAction, Entity entity)
+    public GotoFluidAction(World unvalidWorld, ActionFunc performAction, Entity entity)
     : base (unvalidWorld, performAction) 
     {
         _controller = entity.GetComponent<CharacterController>();
@@ -18,6 +18,7 @@ public class GotoFluidAction : ActionClass
     public override void ChangeWorld(ref World world)
     {
         world.isInFluid = true;
+        world.isHide = true; // just for debug
     }
 
     public override int Cost(World world)

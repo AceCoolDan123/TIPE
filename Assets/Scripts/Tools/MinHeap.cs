@@ -12,6 +12,7 @@ public class MinHeap
     public MinHeap(int capacity)
     {
         _heap = new int[capacity];
+        _keys = new int[capacity];
     }
 
     #region Tool Methods

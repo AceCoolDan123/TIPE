@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Planning
 {
@@ -16,8 +17,12 @@ public class Planning
 
     public Planning(Goal[] goals, int nbGoals, ActionClass[] states, int nbStates)
     {
-        Array.Copy(goals, _goals, nbGoals);
         _nbGoals = nbGoals;
+        _goals = new Goal[_nbGoals];
+        for (int i = 0; i < _nbGoals; i ++)
+        {
+            _goals[i] = goals[i];
+        }
         _actionsGraph = new ActionsGraph(states, nbStates, GenerateTransitions(states, nbStates));
     }
 
@@ -49,7 +54,7 @@ public class Planning
     }
     
     #region A* search
-    public Queue<ActionClass> ChoosePlanning(World worldSeen)
+    public Queue<ActionClass> CreatePlanning(World worldSeen)
     {
         Queue<ActionClass> actionSequence = new Queue<ActionClass>();
         PriorityQueue dists = new PriorityQueue(_nbActions);
@@ -68,6 +73,7 @@ public class Planning
             if (_actionsGraph.states[i].CanPerform(worldSeen))
             {
                 dists.EnqueueRange(i, _actionsGraph.states[i].Cost(worldSeen));
+                Debug.Log(_actionsGraph.states[i]);
             }
             else
             {

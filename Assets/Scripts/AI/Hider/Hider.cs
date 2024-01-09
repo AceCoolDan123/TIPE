@@ -1,5 +1,7 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using System;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(CharacterController))]
 public class Hider : Entity
@@ -7,28 +9,55 @@ public class Hider : Entity
     #region Variables
     [SerializeField]
     private Collider _fluid;
-    private Planning.Goal[] _goals;
-    private int _nbGoals;
-    private ActionClass[] _actions;
-    private int _nbActions;
-    private Action _goToFluidAction;
-    private Planning _planning;
+    private ActionClass.ActionFunc _goToFluidAction;
     #endregion
 
     #region Unity Methods
     private void Awake() 
     {
-        controller = GetComponent<CharacterController>();    
+        controller = GetComponent<CharacterController>();   
     }
     private void Start() 
     {    
+        _goToFluidAction = GotoNearestFluid;
         InitGoals();
         InitActions();
-        _planning = new Planning(_goals, _nbGoals, _actions, _nbActions);
+        planning = new Planning(goals, nbGoals, actions, nbActions);
+        ExecuteActions();
     }
     private void Update() 
     {
         SenseAround();    
+    }
+    #endregion
+
+    #region Init Methods
+    private bool GotoNearestFluid()
+    {
+        Vector3 dest = worldSeen.nearestFluidPos;
+        Debug.Log(dest);
+        controller.Move(dest);
+        // while (transform.position != dest) { wait; }
+        return true;
+    }
+
+    private bool HideGoal(World world)
+    {
+        return world.isHide;
+    }
+
+    protected override void InitGoals()
+    {
+        nbGoals = 1;
+        goals = new Planning.Goal[nbGoals];
+        goals[0] = HideGoal; 
+    }
+
+    protected override void InitActions()
+    {
+        nbActions = 1;
+        actions = new ActionClass[1];
+        actions[0] = new GotoFluidAction(defaultWorld(), _goToFluidAction, this); 
     }
     #endregion
 
@@ -37,32 +66,6 @@ public class Hider : Entity
     {
         Vector3 pos = _fluid.ClosestPoint(transform.position);
     } 
-
-    private void GotoNearestFluid()
-    {
-        Vector3 dest = worldSeen.nearestFluidPos;
-        controller.Move(dest);
-    }
-
-    private bool HideGoal(World world)
-    {
-        return world.isHide;
-    }
-
-    private void InitGoals()
-    {
-        _nbGoals = 1;
-        _goals = new Planning.Goal[_nbGoals];
-        _goals[0] = HideGoal; 
-    }
-
-    private void InitActions()
-    {
-        _nbActions = 1;
-        _actions = new ActionClass[1];
-        _actions[0] = new GotoFluidAction(defaultWorld(), _goToFluidAction, this); 
-    }
-
     private World defaultWorld()
     {
         World world;
@@ -72,6 +75,28 @@ public class Hider : Entity
         world.canMove = true;
         world.isInFluid = false;
         return world;
+    }
+
+    protected override void ExecuteActions()
+    {
+        if (queueActions.Count == 0)
+        {
+            queueActions = planning.CreatePlanning(worldSeen);
+        }
+        ActionClass action = queueActions.Dequeue();
+        ActionClass.ActionFunc PerformAction = action.PerformAction;
+        bool result = PerformAction.Invoke();
+        if (!result) 
+        {
+            planning.CreatePlanning(worldSeen);
+        }
+    }
+    #endregion
+
+    #region Debug Functions
+    public void CreatePlanning(InputAction.CallbackContext ctx)
+    {
+        queueActions = planning.CreatePlanning(worldSeen);
     }
     #endregion
 }
