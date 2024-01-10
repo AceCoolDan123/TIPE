@@ -21,7 +21,8 @@ public class FluidCalculs : MonoBehaviour
         SWAP(ref vy0, ref vy); diffuse(N, 2, ref vy, ref vy0, visc, dt);
         project(N,ref vx,ref vy,ref vx0, ref vy0);
         SWAP(ref vx0, ref vx); SWAP(ref vy0, ref vy);
-        advect(N,1,ref vx,ref vx0, ref vx0, ref vy0, dt); advect(N,2,ref vy,ref vy0, ref vx0, ref vy0, dt);
+        advect(N, 1, ref vx, ref vx0, ref vx0, ref vy0, dt);
+        advect(N, 2, ref vy, ref vy0, ref vx0, ref vy0, dt);
         project(N,ref vx,ref vy,ref vx0, ref vy0);
     }
     
@@ -29,9 +30,9 @@ public class FluidCalculs : MonoBehaviour
     private void add_source(int N, ref float[] x, ref float[] s, float dt)
     {
         int size = (N + 2) * (N + 2); 
-        for (int i = 0; i < size; i++)
+        for (int i = 1; i < size; i++)
         {
-            x[i] = dt * s[i];
+            x[i] += dt * s[i];
         }
     }
 
@@ -45,6 +46,7 @@ public class FluidCalculs : MonoBehaviour
                 for (int j = 1; j <= N; j++)
                 {
                     x[IX(i, j, N)] = (x0[IX(i, j, N)] + a * (x[IX(i - 1, j, N)] + x[IX(i + 1, j, N)] + x[IX(i, j - 1, N)] + x[IX(i, j + 1, N)])) / (1 + 4 * a);
+                    
                 }
             }
             set_bound(N, b, ref x);
@@ -122,17 +124,16 @@ public class FluidCalculs : MonoBehaviour
     /* LIMITES */
     private void set_bound(int N, int b, ref float[] x)
     {
-        for (int i = 0; i < N; i++)
+        for (int i = 1; i <= N; i++)
         {
-            x[IX(0    , i  , N)] = b == 1 ? -x[IX(1, i, N)] : x[IX(1, i, N)];
-            x[IX(N + 1,i   , N)] = b == 1 ? -x[IX(N, i, N)] : x[IX(N, i, N)];
-            x[IX(i     , 0  , N)] = b == 2 ? -x[IX(i, 1, N)] : x[IX(i, 1, N)];
-            x[IX(i     , N+1, N)] = b == 2 ? -x[IX(i, N, N)] : x[IX(i, N, N)];
+            x[IX(0    , i    , N)] = b == 1 ? -x[IX(1, i, N)] : x[IX(1, i, N)];
+            x[IX(N + 1,i     , N)] = b == 1 ? -x[IX(N, i, N)] : x[IX(N, i, N)];
+            x[IX(i     , 0    , N)] = b == 2 ? -x[IX(i, 1, N)] : x[IX(i, 1, N)];
+            x[IX(i     , N + 1, N)] = b == 2 ? -x[IX(i, N, N)] : x[IX(i, N, N)];
         }
-
         x[IX(0    , 0    , N)] = 0.5f * (x[IX(1, 0, N)] + x[IX(0, 1, N)]);
         x[IX(0    , N + 1, N)] = 0.5f * (x[IX(1, N + 1, N)] + x[IX(0, N, N)]);
-        x[IX(N + 1, 0    , N)] = 0.5f * (x[IX(N, 0, N)] + x[IX(N + 1, 0, N)]);
+        x[IX(N + 1, 0    , N)] = 0.5f * (x[IX(N, 0, N)] + x[IX(N + 1, 1, N)]);
         x[IX(N + 1, N + 1, N)] = 0.5f * (x[IX(N, N + 1, N)] + x[IX(N + 1, N, N)]);
     }
     
@@ -147,3 +148,8 @@ public class FluidCalculs : MonoBehaviour
         (t1, t2) = (t2, t1);
     }
 }
+
+
+
+
+

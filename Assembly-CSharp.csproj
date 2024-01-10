@@ -51,6 +51,7 @@
      <Compile Include="Assets\Scripts\State\PlayerState\LookPlayerState.cs" />
      <Compile Include="Assets\Scripts\State\State.cs" />
      <Compile Include="Assets\Scripts\Player\Player.cs" />
+     <Compile Include="Assets\Scripts\Fluid\Eulerian Fluid\CanvasFluid.cs" />
      <Compile Include="Assets\Scripts\StateMachine\PlayerHFSM.cs" />
      <Compile Include="Assets\Scripts\Fluid\Eulerian Fluid\FluidCalculs.cs" />
      <Compile Include="Assets\Scripts\StateMachine\GenericHFSM.cs" />
@@ -70,18 +71,19 @@
      <Folder Include="Assets\Scripts" />
      <Folder Include="Assets\Scripts\Old" />
      <Folder Include="Assets\Scripts\Fluid" />
+     <Folder Include="Assets\Materials\Materials" />
      <Folder Include="Assets\Scripts\State\GoapState" />
      <Folder Include="Assets\Scripts\Player" />
      <Folder Include="Assets\Scripts\State" />
      <Folder Include="Assets\Scripts\AI" />
      <Folder Include="Assets\Prefabs\Player" />
+     <None Include="Assets\Scripts\Fluid\Eulerian Fluid\pourplustard.txt" />
      <Folder Include="Assets\Materials" />
      <Folder Include="Assets\InputSystem" />
      <Folder Include="Assets\Scripts\StateMachine" />
      <Folder Include="Assets\Prefabs" />
      <Folder Include="Assets\Scripts\GOAP" />
      <Folder Include="Assets\Scripts\State\PlayerState" />
-     <Folder Include="Assets\Scripts\Fluid\Eulerian Fluid" />
      <Folder Include="Assets\Scenes" />
      <Reference Include="UnityEngine">
      <HintPath>C:\Program Files\Unity\Hub\Editor\2022.3.9f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
@@ -796,6 +798,7 @@
      </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Scripts\Fluid\Eulerian Fluid\test.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
