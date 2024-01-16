@@ -13,7 +13,8 @@ public abstract class Entity : MonoBehaviour
     protected Planning.Goal[] goals;
     protected Queue<ActionClass> queueActions = new Queue<ActionClass>();
     protected Planning planning;
-
+    protected Vector3 destinationGoto; 
+    public Vector3 DestinationGoto {get {return destinationGoto;}}
 
     protected abstract void InitActions();
     protected abstract void InitGoals();

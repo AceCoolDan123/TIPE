@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(CharacterController))]
@@ -10,6 +11,8 @@ public class Hider : Entity
     [SerializeField]
     private Collider _fluid;
     private ActionClass.ActionFunc _goToFluidAction;
+    [SerializeField]
+    private Vector3 _direction;
     #endregion
 
     #region Unity Methods
@@ -35,9 +38,11 @@ public class Hider : Entity
     private bool GotoNearestFluid()
     {
         Vector3 dest = worldSeen.nearestFluidPos;
-        Debug.Log(dest);
-        controller.Move(dest);
-        // while (transform.position != dest) { wait; }
+        Vector3 direction = Vector3.Normalize(dest - new Vector3(transform.position.x, 0f, transform.position.z));
+        for (int i = 0; i < 200; i ++) 
+        { 
+            controller.Move(direction * Time.deltaTime);
+        }
         return true;
     }
 
@@ -64,7 +69,7 @@ public class Hider : Entity
     #region Other Methods
     protected override void SenseAround()
     {
-        Vector3 pos = _fluid.ClosestPoint(transform.position);
+        worldSeen.nearestFluidPos = _fluid.ClosestPoint(transform.position);
     } 
     private World defaultWorld()
     {
