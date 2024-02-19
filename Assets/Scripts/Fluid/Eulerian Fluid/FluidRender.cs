@@ -41,8 +41,6 @@ public class FluidRender : MonoBehaviour
     private float[] _velXPrev;
     private float[] _velYPrev;
 
-    private int time_step = 0;
-    
     private FluidCalculs fluidCalculs; 
     private CanvasFluid _canvasFluid; 
     void Start()

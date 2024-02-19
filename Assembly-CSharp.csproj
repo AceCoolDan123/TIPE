@@ -41,7 +41,6 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets/Scripts/State/PlayerState/JumpPlayerState.cs" />
-     <Compile Include="Assets/Scripts/GOAP/Action/GotoAction.cs" />
      <Compile Include="Assets/Scripts/GOAP/World/World.cs" />
      <Compile Include="Assets/Scripts/Player/PlayerInputs.cs" />
      <Compile Include="Assets/Scripts/State/PlayerState/PlayerState.cs" />
@@ -49,11 +48,13 @@
      <Compile Include="Assets/Scripts/State/State.cs" />
      <Compile Include="Assets/Scripts/State/GoapState/GotoGoapState.cs" />
      <Compile Include="Assets/Scripts/Player/Player.cs" />
+     <Compile Include="Assets/Scripts/GOAP/Action/FleeAction.cs" />
      <Compile Include="Assets/Scripts/GOAP/ActionsGraph/ActionsGraph.cs" />
      <Compile Include="Assets/Scripts/Fluid/Eulerian Fluid/CanvasFluid.cs" />
      <Compile Include="Assets/Scripts/StateMachine/PlayerHFSM.cs" />
      <Compile Include="Assets/Scripts/Fluid/Eulerian Fluid/FluidCalculs.cs" />
      <Compile Include="Assets/Scripts/AI/Hider/Hider.cs" />
+     <Compile Include="Assets/Scripts/GOAP/Action/GotoFluidAction.cs" />
      <Compile Include="Assets/Scripts/StateMachine/GenericHFSM.cs" />
      <Compile Include="Assets/Scripts/State/PlayerState/MovePlayerState.cs" />
      <Compile Include="Assets/Scripts/Tools/MinHeap.cs" />
@@ -62,6 +63,7 @@
      <Compile Include="Assets/Scripts/StateMachine/GenericFSM.cs" />
      <Compile Include="Assets/Scripts/StateMachine/GoapFSM.cs" />
      <Compile Include="Assets/Scripts/AI/Entity.cs" />
+     <Compile Include="Assets/Scripts/State/GoapState/UseObjectGoapState.cs" />
      <Compile Include="Assets/Scripts/Tools/PriorityQueue.cs" />
      <Compile Include="Assets/Scripts/State/HState.cs" />
      <Compile Include="Assets/Scripts/State/PlayerState/GroundedPlayerState.cs" />

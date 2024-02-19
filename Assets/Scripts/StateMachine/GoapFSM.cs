@@ -2,7 +2,6 @@ using UnityEngine;
 public enum GoapStateEnum
 {
     GOTO,
-    ANIMATE,
     USEOBJECT,
 }
 

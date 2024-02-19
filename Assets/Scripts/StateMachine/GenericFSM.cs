@@ -21,8 +21,10 @@ public class GenericFSM<T>
         State<T> state = _dict[id];
         
         if (state == null) { return; }
-        
-        _currentState.OnExit();
+        if (_currentState != null) 
+        {
+            _currentState.OnExit();
+        }
         _currentState = state;
         _currentState.OnEnter();
     }

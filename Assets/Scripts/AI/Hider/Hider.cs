@@ -10,9 +10,6 @@ public class Hider : Entity
     #region Variables
     [SerializeField]
     private Collider _fluid;
-    private ActionClass.ActionFunc _goToFluidAction;
-    [SerializeField]
-    private Vector3 _direction;
     #endregion
 
     #region Unity Methods
@@ -22,28 +19,35 @@ public class Hider : Entity
     }
     private void Start() 
     {    
-        _goToFluidAction = GotoNearestFluid;
+        InitFSM();
         InitGoals();
         InitActions();
         planning = new Planning(goals, nbGoals, actions, nbActions);
+        SenseAround();
         ExecuteActions();
     }
     private void Update() 
     {
-        SenseAround();    
+        SenseAround();
+        goapFSM.OnUpdate();
     }
     #endregion
 
     #region Init Methods
-    private bool GotoNearestFluid()
+    private void InitFSM()
     {
-        Vector3 dest = worldSeen.nearestFluidPos;
-        Vector3 direction = Vector3.Normalize(dest - new Vector3(transform.position.x, 0f, transform.position.z));
-        for (int i = 0; i < 200; i ++) 
-        { 
-            controller.Move(direction * Time.deltaTime);
-        }
-        return true;
+        goapFSM = new GoapFSM();
+        GoapState gotoState = new GotoGoapState(this);
+        GoapState use = new UseObjectGoapState(this);
+        goapFSM.AddState(gotoState);
+        goapFSM.AddState(use);
+        isUsingObject = false;
+        goapFSM.SetState(GoapStateEnum.GOTO);
+    }
+
+    private void GotoNearestFluid(World worldSeen)
+    {
+        destinationGoto = worldSeen.nearestFluidPos;
     }
 
     private bool HideGoal(World world)
@@ -62,7 +66,8 @@ public class Hider : Entity
     {
         nbActions = 1;
         actions = new ActionClass[1];
-        actions[0] = new GotoFluidAction(defaultWorld(), _goToFluidAction, this); 
+        Action<World> gotoFluid = GotoNearestFluid; 
+        actions[0] = new GotoFluidAction(defaultWorld(), gotoFluid); 
     }
     #endregion
 
@@ -89,12 +94,8 @@ public class Hider : Entity
             queueActions = planning.CreatePlanning(worldSeen);
         }
         ActionClass action = queueActions.Dequeue();
-        ActionClass.ActionFunc PerformAction = action.PerformAction;
-        bool result = PerformAction.Invoke();
-        if (!result) 
-        {
-            planning.CreatePlanning(worldSeen);
-        }
+        Action<World> PerformAction = action.PerformAction;
+        PerformAction?.Invoke(worldSeen);
     }
     #endregion
 

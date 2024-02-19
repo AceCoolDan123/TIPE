@@ -6,12 +6,10 @@ public abstract class ActionClass
     // this is relevant for the transitions' construction of the action graph
     private readonly World _unvalidWorld;
     public World UnvalidWorld { get { return _unvalidWorld; } }
-    // while performing an action, if the function return true, the action has succeeded, on the contrary, it has failed
-    public delegate bool ActionFunc();
-    // perform the action on the real game, the preconditions are supposed to be satisfied
-    public readonly ActionFunc PerformAction;
+    // perform the action in the real world, the preconditions are supposed to be satisfied
+    public Action<World> PerformAction;
 
-    public ActionClass(World unvalidWorld, ActionFunc performAction)
+    public ActionClass(World unvalidWorld, Action<World> performAction)
     {
         _unvalidWorld = unvalidWorld;
         PerformAction = performAction; 
