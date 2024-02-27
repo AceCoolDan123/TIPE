@@ -10,15 +10,22 @@ public class Hider : Entity
     #region Variables
     [SerializeField]
     private Collider _fluid;
+    [SerializeField]
+    private GameObject appearance;
+    private Collider _col;
     #endregion
 
     #region Unity Methods
     private void Awake() 
     {
-        controller = GetComponent<CharacterController>();   
+        controller = GetComponent<CharacterController>();
+        _col = GetComponent<Collider>();
     }
     private void Start() 
     {    
+        appearance.SetActive(true);
+        destinationGoto = transform.position;
+        InitWorld();
         InitFSM();
         InitGoals();
         InitActions();
@@ -33,7 +40,30 @@ public class Hider : Entity
     }
     #endregion
 
+    #region Perform Action Methods
+    private void GotoNearestFluid(World worldSeen)
+    {
+        if (worldSeen.nearestFluidPos != null) 
+        {
+            destinationGoto = (Vector3)worldSeen.nearestFluidPos;
+        }
+    }
+
+    private void HideInFluid(World worldSeen)
+    {
+        _col.isTrigger = true;
+        appearance.SetActive(false);
+    }
+    #endregion
+
     #region Init Methods
+    private void InitWorld()
+    {
+        worldSeen.isHide = false;
+        worldSeen.isInFluid = false;
+        worldSeen.canMove = true;
+    }
+
     private void InitFSM()
     {
         goapFSM = new GoapFSM();
@@ -45,14 +75,13 @@ public class Hider : Entity
         goapFSM.SetState(GoapStateEnum.GOTO);
     }
 
-    private void GotoNearestFluid(World worldSeen)
-    {
-        destinationGoto = worldSeen.nearestFluidPos;
-    }
-
     private bool HideGoal(World world)
     {
-        return world.isHide;
+        if (world.isHide == true)
+        {
+            return true;
+        }
+        return false;
     }
 
     protected override void InitGoals()
@@ -64,10 +93,12 @@ public class Hider : Entity
 
     protected override void InitActions()
     {
-        nbActions = 1;
-        actions = new ActionClass[1];
+        nbActions = 2;
+        actions = new ActionClass[nbActions];
         Action<World> gotoFluid = GotoNearestFluid; 
-        actions[0] = new GotoFluidAction(defaultWorld(), gotoFluid); 
+        Action<World> hideInFluid = HideInFluid; 
+        actions[0] = new GotoFluidAction(new World(player, null, null, null, false, null), gotoFluid, this); 
+        actions[1] = new HideInFluidAction(new World(player, null, null, null, null, false), hideInFluid, this); 
     }
     #endregion
 
@@ -75,25 +106,46 @@ public class Hider : Entity
     protected override void SenseAround()
     {
         worldSeen.nearestFluidPos = _fluid.ClosestPoint(transform.position);
+        if (HaveFindPlayerPos())
+        {
+            worldSeen.player = new PlayerIntels();
+            worldSeen.player.position = player.position;
+            worldSeen.player.look = player.look;
+            worldSeen.player.isNull = false;
+        }
+        else
+        {
+            worldSeen.player.isNull = true;
+        }
     } 
-    private World defaultWorld()
+    private bool HaveFindPlayerPos()
     {
-        World world;
-        world.playerPos = Vector3.zero;
-        world.nearestFluidPos = Vector3.zero;
-        world.isHide = false;
-        world.canMove = true;
-        world.isInFluid = false;
-        return world;
+        // 7 is the Player's layer Mask
+        Collider[] colliders = Physics.OverlapSphere(transform.position, LookRange, 7); 
+        float dist = float.PositiveInfinity;
+        bool res = false;
+        foreach (Collider col in colliders)
+        {
+            res = true;
+            float tmp = Vector3.Distance(transform.position, col.transform.position);
+            if (tmp < dist) 
+            {
+                dist = tmp;
+                player.position = col.transform.position;
+                player.look = col.transform.forward;
+            }
+        }
+        // there is at least one player
+        return res;
     }
 
     protected override void ExecuteActions()
     {
-        if (queueActions.Count == 0)
+        if (actionStack.Count == 0)
         {
-            queueActions = planning.CreatePlanning(worldSeen);
+            actionStack = planning.CreatePlanning(worldSeen);
         }
-        ActionClass action = queueActions.Dequeue();
+        ActionClass action = actionStack.Pop();
         Action<World> PerformAction = action.PerformAction;
         PerformAction?.Invoke(worldSeen);
     }
@@ -102,7 +154,13 @@ public class Hider : Entity
     #region Debug Functions
     public void CreatePlanning(InputAction.CallbackContext ctx)
     {
-        queueActions = planning.CreatePlanning(worldSeen);
+        actionStack = planning.CreatePlanning(worldSeen);
+    }
+
+    private void OnDrawGizmos() 
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, LookRange);
     }
     #endregion
 }

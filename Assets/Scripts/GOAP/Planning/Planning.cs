@@ -54,36 +54,43 @@ public class Planning
     }
     
     #region A* search
-    public Queue<ActionClass> CreatePlanning(World worldSeen)
+    public Stack<ActionClass> CreatePlanning(World worldSeen)
     {
-        Queue<ActionClass> actionSequence = new Queue<ActionClass>();
-        PriorityQueue dists = new PriorityQueue(_nbActions);
+        Stack<ActionClass> actionStack = new Stack<ActionClass>();
+        PriorityQueue pq = new PriorityQueue(_nbActions);
         // each world after i action has been performed
         World[] worldsSeen = new World[_nbActions];
         World worldBuffer;
         bool[] isFinalAction = new bool[_nbActions];
+        // to find the right action sequence
         int[] preds = new int[_nbActions];
+        // to have the dists for each node
+        int[] dists = new int[_nbActions];
 
-        // Initializing relevant intels for the A* search
+        // Initializing relevant intels for the Dijkstra search
         for (int i = 0; i < _nbActions; i ++)
         {
             worldsSeen[i] = worldSeen;
+            // there are not precedessors
             preds[i] = -1;
-            // Worldhe Agent can perform these actions first
+            // there is no distance
+            dists[i] = Int32.MaxValue;
+            // Search the actions that World Agent can perform at start
             if (_actionsGraph.states[i].CanPerform(worldSeen))
             {
-                dists.EnqueueRange(i, _actionsGraph.states[i].Cost(worldSeen));
-                Debug.Log(_actionsGraph.states[i]);
+                dists[i] = _actionsGraph.states[i].Cost(worldSeen);
+                pq.EnqueueRange(i, _actionsGraph.states[i].Cost(worldSeen));
             }
             else
             {
-                dists.EnqueueRange(i, Int32.MaxValue);
+                pq.EnqueueRange(i, Int32.MaxValue);
             }
 
-            // affecting the search for the most important goal at first
-            _currentGoal = 0;
+            // at the beginning we suppose node i is not the final action
             isFinalAction[i] = false;
-
+            
+            // searching one goal that is been satisfied by the node i
+            _currentGoal = 0;
             while (_currentGoal < _nbGoals)
             {
                 worldBuffer = worldSeen;
@@ -97,36 +104,41 @@ public class Planning
         }
 
         // the crux of the A* search
-        while (dists.Count > 0)
+        while (pq.Count > 0)
         {
-            int actionIndex = dists.Dequeue();
-
-            _actionsGraph.states[actionIndex].ChangeWorld(ref worldsSeen[actionIndex]);
-            worldBuffer = worldsSeen[actionIndex];
-            if (isFinalAction[actionIndex]) 
+            // dequeue a node i (an action)
+            int i = pq.Dequeue();
+            // the world seen by the node i is been modified by the action of the node
+            _actionsGraph.states[i].ChangeWorld(ref worldsSeen[i]);
+            worldBuffer = worldsSeen[i];
+            if (isFinalAction[i]) 
             {  
-                int i = actionIndex;
-                actionSequence.Enqueue(_actionsGraph.states[i]);
+                actionStack.Push(_actionsGraph.states[i]);
                 while (preds[i] != -1)
                 {
                     i = preds[i];
-                    actionSequence.Enqueue(_actionsGraph.states[i]);
+                    actionStack.Push(_actionsGraph.states[i]);
                 }
-                break;
+                return actionStack;
             }
 
-            foreach (int item in _actionsGraph.transitions[actionIndex])
+            foreach (int item in _actionsGraph.transitions[i])
             {
-                if (!dists.IsHere(item)) { continue; }
+                //if (!pq.IsHere(item)) { continue; }
                 int h = _actionsGraph.states[item].Cost(worldBuffer);
-                if (h < dists.GetPriority(item))
+                int g = _actionsGraph.states[item].Advantage(worldBuffer);
+                int f = h + g;
+                if (f + dists[i] < dists[item])
                 {
-                    dists.ChangePriority(item, h);
+                    // constructing the right path
+                    preds[item] = i;
+                    dists[item] = h + dists[i];
+                    pq.ChangePriority(item, dists[item]);
                     worldsSeen[item] = worldBuffer;
                 }
             }
         }
-        return actionSequence;
+        return actionStack;
     }
     #endregion
     

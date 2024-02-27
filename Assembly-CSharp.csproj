@@ -48,7 +48,6 @@
      <Compile Include="Assets/Scripts/State/State.cs" />
      <Compile Include="Assets/Scripts/State/GoapState/GotoGoapState.cs" />
      <Compile Include="Assets/Scripts/Player/Player.cs" />
-     <Compile Include="Assets/Scripts/GOAP/Action/FleeAction.cs" />
      <Compile Include="Assets/Scripts/GOAP/ActionsGraph/ActionsGraph.cs" />
      <Compile Include="Assets/Scripts/Fluid/Eulerian Fluid/CanvasFluid.cs" />
      <Compile Include="Assets/Scripts/StateMachine/PlayerHFSM.cs" />
@@ -56,6 +55,7 @@
      <Compile Include="Assets/Scripts/AI/Hider/Hider.cs" />
      <Compile Include="Assets/Scripts/GOAP/Action/GotoFluidAction.cs" />
      <Compile Include="Assets/Scripts/StateMachine/GenericHFSM.cs" />
+     <Compile Include="Assets/Scripts/Tools/Tools.cs" />
      <Compile Include="Assets/Scripts/State/PlayerState/MovePlayerState.cs" />
      <Compile Include="Assets/Scripts/Tools/MinHeap.cs" />
      <Compile Include="Assets/Scripts/State/GoapState/GoapState.cs" />
@@ -67,6 +67,7 @@
      <Compile Include="Assets/Scripts/Tools/PriorityQueue.cs" />
      <Compile Include="Assets/Scripts/State/HState.cs" />
      <Compile Include="Assets/Scripts/State/PlayerState/GroundedPlayerState.cs" />
+     <Compile Include="Assets/Scripts/GOAP/Action/HideInFluidAction.cs" />
      <Compile Include="Assets/Scripts/Fluid/Eulerian Fluid/FluidRender.cs" />
      <Compile Include="Assets/Scripts/Old/FirstPersonController.cs" />
      <Compile Include="Assets/InputSystem/PlayerActions.cs" />

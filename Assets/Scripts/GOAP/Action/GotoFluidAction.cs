@@ -3,22 +3,45 @@ using UnityEngine;
 
 public class GotoFluidAction : ActionClass
 {
-    public GotoFluidAction(World unvalidWorld, Action<World> performAction)
-    : base (unvalidWorld, performAction) {}
+    public GotoFluidAction(World unvalidWorld, Action<World> performAction, Entity entity)
+    : base (unvalidWorld, performAction, entity) {}
 
     public override bool CanPerform(World world)
     {
-        return world.canMove;
+        if (world.canMove == false)
+        {
+            return false;
+        }
+        return true;
     }
 
     public override void ChangeWorld(ref World world)
     {
         world.isInFluid = true;
-        world.isHide = true; // just for debug
     }
 
     public override int Cost(World world)
     {
         return 10;
+    }
+
+    public override int Advantage(World world)
+    {
+        //the player is not seen but don't care
+        if (world.player.isNull)
+        {
+            return 0; // the best advantage possible
+        }
+        if (world.nearestFluidPos == null)
+        {
+            // there's no fluid to go !
+            return 100; 
+        }
+        if (Tools.IsLookingAtMe(world.player.position, world.player.look, entity.transform.position))
+        {
+            return 100;
+        }
+        
+        return 0;
     }
 }
