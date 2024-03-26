@@ -1,9 +1,8 @@
-
 using System;
 public class MinHeap
 {
-    // 2*i : left child 
-    // 2*i + 1: right child
+    // 2*i + 1 : left child 
+    // 2*i + 2: right child
     private int[] _keys; 
     private int[] _heap;
     private int _count;
@@ -13,6 +12,7 @@ public class MinHeap
     {
         _heap = new int[capacity];
         _keys = new int[capacity];
+        _count = 0;
     }
 
     #region Tool Methods
@@ -123,7 +123,7 @@ public class MinHeap
     {
         for (int i = 0; i < _count; i ++)
         {
-            if (_keys[i] == i) { return true; }
+            if (_keys[i] == key) { return true; }
         }
         return false;
     }
