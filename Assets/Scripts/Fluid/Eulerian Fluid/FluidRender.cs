@@ -41,7 +41,7 @@ public class FluidRender : MonoBehaviour
     private float[] _velXPrev;
     private float[] _velYPrev;
 
-    private int time_step = 0;
+    //private int time_step = 0;
     
     private FluidCalculs fluidCalculs; 
     private CanvasFluid _canvasFluid; 
@@ -137,10 +137,13 @@ public class FluidRender : MonoBehaviour
             }
             if (right)
             {
-                _velXPrev[x + y * (n + 2)] = force * _mouseDelta.x * (n + 2);
-                _velYPrev[x + y * (n + 2)] = force * _mouseDelta.y * (n + 2);
-                _velXPrev[x + y * (n + 2)] = -200;
-                _velYPrev[x + y * (n + 2)] = -200;
+                //_velXPrev[x + y * (n + 2)] = force * _mouseDelta.x * (n + 2);
+                //_velYPrev[x + y * (n + 2)] = force * _mouseDelta.y * (n + 2);
+				double cste = force * Math.Exp((Math.Pow(x-_mouseDelta.x, 2) + Math.Pow(y-_mouseDelta.y, 2))/500);
+				_velXPrev[x + y * (n + 2)] = (float) cste;
+				_velYPrev[x + y * (n + 2)] = (float) cste;
+                //_velXPrev[x + y * (n + 2)] = -200;
+                //_velYPrev[x + y * (n + 2)] = -200;
             }
         }
         else
